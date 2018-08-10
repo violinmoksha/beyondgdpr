@@ -1,0 +1,8 @@
+chickenSwitches:
+  cbcNotCtr: false
+  counter: 3
+agentConfig:
+  cluster: ["some-mongodb1.com", "some-mongodb2.com"]
+  username: agentMongoUser
+  password: password
+  concurrentConns: 5
