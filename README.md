@@ -2,7 +2,7 @@
 
 BeyondGDPR is based on a very simple ethical assertion.
 
-That assertion is: no one, except the user of an application, should be able to access that user's data. This ethical assertion should apply to the developers as well, since we too should have no access to a real-world user's personal information (PII, per GDPR).
+That assertion is: no one, except the user of an application, should be able to access that user's data. This ethical assertion should apply to the developers as well, since we too should have zero access to a real-world user's personal information (PII, as identified by the GDPR).
 
 GDPR is great, but it still failed (at the time of this writing) to fully-address this fundamental ethical concern, that only the user should have access to the user's data. Letting say, a government(s)-regulated 3rd party Data Controller have access to that data--instead of the application developers--although providing an additional layer of protection, still doesn't directly address the fundamental assertion, which is that only the user should have access to that user's PII.
 
