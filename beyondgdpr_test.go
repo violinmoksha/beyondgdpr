@@ -6,12 +6,21 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"runtime"
+	"sync"
 	"testing"
 )
 
 const baseURL string = "http://localhost:8080"
 const encryptEndpoint string = "/encryptPlaintext"
 const decryptEndpoint string = "/decryptCiphertext"
+
+var testWg sync.WaitGroup
+var isLoadBench bool
+
+func init() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+}
 
 func TestEncryptBadRequest(t *testing.T) {
 	tests := []struct {
@@ -78,7 +87,7 @@ func TestEncryptDecryptRoundtrip(t *testing.T) {
 		userkey   string
 	}{
 		{
-			plaintext: "Hello, World!",
+			plaintext: "Hello, World! Here is an even longer plaintext which is really, really long...",
 			userkey:   "+YbX43O5PU/o1bBlRoFh1pZTbluSzABjuxriVo3e+Bk=",
 		},
 	}
@@ -159,5 +168,21 @@ func TestEncryptDecryptRoundtrip(t *testing.T) {
 		if ourPlaintext != tt.plaintext {
 			t.Errorf("Should be getting original plaintext back after encryptEndpoint+decryptEndpoint")
 		}
+	}
+
+	if isLoadBench {
+		testWg.Done()
+	}
+}
+
+func BenchmarkLoads(b *testing.B) {
+	var t *testing.T
+
+	isLoadBench = true
+
+	for i := 0; i < b.N; i++ {
+		testWg.Add(1)
+		go TestEncryptDecryptRoundtrip(t)
+		testWg.Wait()
 	}
 }
