@@ -25,8 +25,7 @@ func TestEncryptBadRequest(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		// this POST is incorrectly formed thus does not pass a [44]rune aka [32]byte userkey
-		// and should therefore cause server to issue 400 without crashing it
+		// this POST is also incorrectly formed ...ditto
 		response, err := http.PostForm(baseURL+encryptEndpoint, url.Values{
 			"plaintext": {tt.plaintext},
 			"userkey":   {tt.userkey},
@@ -40,11 +39,6 @@ func TestEncryptBadRequest(t *testing.T) {
 		if response.Status != "400 Bad Request" {
 			t.Errorf("Should have returned 400 Bad Request")
 		}
-
-		/*_, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			t.Fatal(err)
-		}*/
 	}
 }
 
@@ -97,12 +91,12 @@ func TestEncryptDecryptRoundtrip(t *testing.T) {
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			t.Errorf("%s", err.Error())
+			t.Errorf("Should have gotten client response: %s", err.Error())
 		}
 		defer resp.Body.Close()
 
 		if resp.Status != "200 OK" {
-			t.Errorf("encryptEndpoint Should have returned 200 OK")
+			t.Errorf("Should have returned 200 OK from encryptEndpoint")
 		}
 
 		// now get that ciphertext out
@@ -146,7 +140,7 @@ func TestEncryptDecryptRoundtrip(t *testing.T) {
 		defer resp.Body.Close()
 
 		if resp.Status != "200 OK" {
-			t.Errorf("decryptEndpoint Should have returned 200 OK")
+			t.Errorf("Should have returned 200 OK from decryptEndpoint")
 		}
 
 		// and finally, pull plaintext out which should match initial plaintext
