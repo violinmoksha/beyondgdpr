@@ -16,7 +16,6 @@ const encryptEndpoint string = "/encryptPlaintext"
 const decryptEndpoint string = "/decryptCiphertext"
 
 var testWg sync.WaitGroup
-var isLoadBench bool
 
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
@@ -169,20 +168,63 @@ func TestEncryptDecryptRoundtrip(t *testing.T) {
 			t.Errorf("Should be getting original plaintext back after encryptEndpoint+decryptEndpoint")
 		}
 	}
-
-	if isLoadBench {
-		testWg.Done()
-	}
 }
 
 func BenchmarkLoads(b *testing.B) {
-	var t *testing.T
-
-	isLoadBench = true
-
 	for i := 0; i < b.N; i++ {
 		testWg.Add(1)
-		go TestEncryptDecryptRoundtrip(t)
+		go encryptDecryptRoundtripForBench()
 		testWg.Wait()
 	}
+}
+
+func encryptDecryptRoundtripForBench() {
+	tests := []struct {
+		plaintext string
+		userkey   string
+	}{
+		{
+			plaintext: "Hello, World! Here is an even longer plaintext which is really, really long...",
+			userkey:   "+YbX43O5PU/o1bBlRoFh1pZTbluSzABjuxriVo3e+Bk=",
+		},
+	}
+
+	for _, tt := range tests {
+		var jsonStr = []byte(`{"plaintext":"` + tt.plaintext + `","userkey":"` + tt.userkey + `"}`)
+		req, _ := http.NewRequest("POST", baseURL+encryptEndpoint, bytes.NewBuffer(jsonStr))
+		req.Header.Set("Content-Type", "application/json")
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+		}
+		defer resp.Body.Close()
+
+		// now get that ciphertext out
+		body, _ := ioutil.ReadAll(resp.Body)
+		var objmap map[string]*json.RawMessage
+		_ = json.Unmarshal(body, &objmap)
+		var ourCiphertext string
+		_ = json.Unmarshal(*objmap["ciphertext"], &ourCiphertext)
+
+		// and go back to decryptEndpoint with it
+		jsonStr = []byte(`{"ciphertext":"` + ourCiphertext + `","userkey":"` + tt.userkey + `"}`)
+		req, _ = http.NewRequest("POST", baseURL+decryptEndpoint, bytes.NewBuffer(jsonStr))
+		req.Header.Set("Content-Type", "application/json")
+
+		client = &http.Client{}
+		resp, err = client.Do(req)
+		if err != nil {
+		}
+		defer resp.Body.Close()
+
+		// and finally, pull plaintext out which should match initial plaintext
+		body, _ = ioutil.ReadAll(resp.Body)
+		var decryptObjmap map[string]*json.RawMessage
+		_ = json.Unmarshal(body, &decryptObjmap)
+		var ourPlaintext string
+		_ = json.Unmarshal(*decryptObjmap["plaintext"], &ourPlaintext)
+	}
+
+	testWg.Done()
 }
