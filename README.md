@@ -10,7 +10,7 @@ BeyondGDPR is a small GoLang-powered server which directly addresses the ethical
 
 ## Initial Load Test Results
 
-Results are in as service now utilizes full multi-thread concurrency and SMP (multi-CPU cores). These tests were performed from k6 cloud in Ashburn, VA directed at single-instance in Singapore. As we can see, the server withstood 100 Virtual Users over 10seconds resulting in ~500 responses/second of encrypt+decrypt RoundTrips over the network, with 100% 200OKs. 
+Results are in as service now utilizes full multi-thread concurrency and SMP (multi-CPU cores). These tests were performed from k6 cloud in Ashburn, VA directed at single running instance in Singapore. As we can see, the server withstood 100 Virtual Users over 10seconds resulting in ~500 r/second of encrypt+decrypt over the network, with 100% 200OKs.
 
 https://www.dropbox.com/s/72yjedq7b4s360o/Screenshot%202018-08-15%2016.47.17.png?dl=0
 
