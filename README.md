@@ -1,6 +1,6 @@
 # BeyondGDPR
 
-BeyondGDPR is based on a very simple, logical-assertion in ethics regarding user data privacy in web and mobile applications.
+BeyondGDPR is based on a very simple, logical-assertion in privacy-ethics regarding end-user data in web and mobile applications.
 
 The assertion: no person, except the end user of an application, should be able to access that user's personal and private data in production. This ethical assertion--in a more-perfect use-case than existing implementations--should even exclude the developers being able to access the end-user's production data. Once an application is deployed into real-world production, we should have zero access to that person's protected information (PII, as identified by the GDPR).
 
