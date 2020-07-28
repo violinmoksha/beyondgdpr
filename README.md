@@ -2,7 +2,9 @@
 
 BeyondGDPR is based on a very simple, logical-assertion in privacy-ethics regarding end-user data in web and mobile applications.
 
-The assertion: no person, except the end user of an application, should be able to access that user's personal and private data in production. This ethical assertion--in a more-perfect use-case than existing implementations--should even exclude the developers being able to access the end-user's production data. Once an application is deployed into real-world production, we should have zero access to that person's protected information (PII, as identified by the GDPR).
+The assertion: no person, except the end user of an application, should be able to access that user's personal and private data in production. 
+
+This ethical assertion--in a more-perfect use-case than existing implementations across the current Internet--should even exclude the developers being able to access the end-user's production data. Once an application is deployed into real-world production, we should have zero access to that person's protected information (PII, as identified by the GDPR).
 
 GDPR is great step forward, but it still failed to fully-address this fundamental ethical concern in applications architecture. Letting a government(s)-regulated 3rd party Data Controller have access to user data, although providing an additional layer of protection which excludes developers from access controls, still doesn't directly address the fundamental assertion. The fundamental assertion is: literally only the user should have access to their own PII data, same as the resident of a physical property is the only one with the key to the resident's door. Letting the application developers or 3rd-party data controllers have access to the user's data would then be analogous to allowing the landlord or mortgage company to enter whenever they please. In a more-perfect applications-architecture for data privacy, only the user would have that access, without exception.
 
@@ -17,3 +19,7 @@ Service utilizes multi-thread concurrency native and also Symmetric Multi-Proces
 ## TODO
 
 - Kubernetes microservice'ization for additional horizontal-scaling relative to app architectures which have been written in GoLang-only. ;-)
+
+## TODO Considerations
+
+- Possible separately-keyed assymetric-encrypted storage, or additional external-transport under SSL for warranted government-agency operations. 8-)
