@@ -16,12 +16,12 @@ As RESTful input, BeyondGDPR takes a JSON with two members from the end-user cli
 
 ## Initial Load Test Results
 
-Service utilizes multi-thread concurrency native and also Symmetric Multi-Processing aka SMP (multi-CPU cores), as virtues native to GoLang (whereas JVMs or NodeJS cluster-instances would serve as less-powerful, dependent on essentially one or the other versus the ability to scale both vertically and horizontally). Automated volume tests were performed from a cloud in Ashburn, VA directed at a single running instance in Singapore. As we can see, the service withstood 100 VUs over 10seconds resulting in ~500 r/second of concurrent encrypt-decrypt over the network, with zero fails (100% 200OK). Thus the implementation exclusively in GoLang-only proves the concept-feasibility for real-world application architectures.
+Service utilizes multi-thread concurrency and is also Symmetric Multi-Processing -enabled (distributes execution across multiple-CPUs), as-native only to GoLang (whereas JVMs or NodeJS cluster-instances would be much less scalable, dependent on essentially threads -or- SMP versus the ability to utilize both). Automated volume tests were performed from a cloud in Ashburn, VA directed at a single running instance in Singapore. As we can see, the service withstood 100 Virtual Units--concurrent Virtual Units--over 10seconds resulting in ~500 r/second total of concurrent encrypt-decrypt over the network, with zero fails (100% 200OK). Thus the implementation in GoLang proves the concept-feasibility for real-world application architectures, exclusively in GoLang.
 
 ## TODO
 
-- Kubernetes microservice'ization for additional horizontal-scaling relative to app architectures which have been written in GoLang-only. ;-)
+- Kubernetes microservice'ization for additional horizontal-scaling relative to app architectures which have also been written in GoLang.
 
-## TODO Considerations
+## TODO Possible Future-State Consideration
 
-- Possible separately-keyed assymetric-encrypted storage, or additional external-transport under SSL for warranted government-agency operations. 8-)
+- Separately-keyed assymetric-encrypted storage, and/or additional "backdoor" external-transport under SSL for answering to demands by legally-warranted government-agency operations, in the case of user mallory.
